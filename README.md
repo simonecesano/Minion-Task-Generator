@@ -31,13 +31,14 @@ Minion::Task::Generator allows flexible creation of tasks with pluggable and con
 
 ### new
 
-    my $task = Minion::Task::Generator->new(sub {}, { roles => {} })
+    my $task = Minion::Task::Generator->new(sub { }, \%opts)
 
-Creates a new task that executes the subref passed as the first argument, and the options as the second.
+Creates a new task that executes the subref passed as the first argument, with the options passed as the second one.
 
-The "roles" option defines which roles will be applied to the job on execution; if a role begins with "+", "Minion::Job::Role" gets prepended to the role name in place of the plus sign.
+The "roles" option defines which roles will be applied to the job on execution;
+if a role begins with "+", "Minion::Job::Role" gets prepended to the role name in place of the plus sign.
 
-The hashref values of the roles option get passed to the role on job execution. 
+The hashref values of the "roles" option get passed to the role on job execution. 
 
 ### task
 
@@ -52,9 +53,7 @@ Options can be passed
 - when the task gets created
 - when the job gets queued
 
-To pass options to the role, they are defined as part of the roles hashref, as the value to the key that defines the role.
-
-In this case:
+To pass options to the role, define them as part of the roles option, like this:
 
     app->minion->add_task(some_task => task(sub { return 1 },
                                    {
@@ -63,7 +62,7 @@ In this case:
                                              }
                                    }));
 
-job will be run with the Minion::Job::Role::Timeout role. The role will be passed a timeout option of 6 seconds.
+Then the job will be run with the Minion::Job::Role::Timeout role, which will be passed a timeout option of 6 seconds.
 
 Options can also be overridden at the job level, by passing them after an argument named '-opts' like this:
 
